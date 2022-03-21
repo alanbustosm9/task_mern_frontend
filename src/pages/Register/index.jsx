@@ -1,11 +1,58 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
+
+import Alert from "../../components/Alert/index";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+
+  const [alert, setAlert] = useState({});
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // Validación de campos
+    if ([name, email, password, password2].includes("")) {
+      setAlert({
+        msg: "Todos los campos son obligatorios",
+        error: true,
+      });
+      return;
+    }
+    // Comprobar ambas passwords
+    if (password !== password2) {
+      setAlert({
+        msg: "Los password no son iguales",
+        error: true,
+      });
+      return;
+    }
+    // Validar longitud de password
+    if (password.length < 6) {
+      setAlert({
+        msg: "Su password debe tener como mínimo 6 cararacteres",
+        error: true,
+      });
+      return;
+    }
+    setAlert({});
+
+    // Crear usuario en la BD
+    try {
+      const resp = await axios.post("htpp://localhost:4000/api/users", {
+        name,
+        email,
+        password,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const { msg } = alert;
 
   return (
     <>
@@ -14,7 +61,12 @@ const Register = () => {
         <span className="text-slate-700">proyectos</span>
       </h1>
 
-      <form className="my-10 bg-white shadow rounded-lg p-10">
+      {msg && <Alert alert={alert} />}
+
+      <form
+        className="my-10 bg-white shadow rounded-lg p-10"
+        onSubmit={handleSubmit}
+      >
         <div className="my-5">
           <label
             className="capitalize text-gray-600 block text-xl font-bold"

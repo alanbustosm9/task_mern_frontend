@@ -42,13 +42,22 @@ const Register = () => {
 
     // Crear usuario en la BD
     try {
-      const resp = await axios.post("htpp://localhost:4000/api/users", {
-        name,
-        email,
-        password,
-      });
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users`,
+        {
+          name,
+          email,
+          password,
+        }
+      );
+      setAlert({ msg: data.msg, error: false });
+
+      setName("");
+      setEmail("");
+      setPassword("");
+      setPassword2("");
     } catch (error) {
-      console.log(error);
+      setAlert({ msg: error.response.data.msg, error: true });
     }
   };
 

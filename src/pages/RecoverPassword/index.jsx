@@ -1,7 +1,8 @@
-import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+
 import Alert from "../../components/Alert/index";
+import clientAxios from "../../config/clientAxios";
 
 const RecoverPassword = () => {
   const [email, setEmail] = useState("");
@@ -15,13 +16,13 @@ const RecoverPassword = () => {
     }
 
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/users/reset-password`,
-        { email }
-      );
+      const { data } = await clientAxios.post(`/users/reset-password`, {
+        email,
+      });
       setAlert({ msg: data.msg, error: false });
     } catch (error) {
       setAlert({ msg: error.response.data.msg, error: true });
+      console.log(error);
     }
   };
 

@@ -13,9 +13,9 @@ const App = () => {
         <Route path="/" element={<AuthLayout />}>
           <Route index element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="recover-password" element={<RecoverPassword />} />
-          <Route path="recover-password/:token" element={<NewPassword />} />
-          <Route path="confirm-account/:id" element={<ConfirmAccount />} />
+          <Route path="reset-password" element={<RecoverPassword />} />
+          <Route path="reset-password/:token" element={<NewPassword />} />
+          <Route path="confirm/:id" element={<ConfirmAccount />} />
         </Route>
 
         <Route></Route>

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
 
+import clientAxios from "../../config/clientAxios";
 import Alert from "../../components/Alert/index";
 
 const Register = () => {
@@ -42,14 +42,11 @@ const Register = () => {
 
     // Crear usuario en la BD
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/users`,
-        {
-          name,
-          email,
-          password,
-        }
-      );
+      const { data } = await clientAxios.post(`/users`, {
+        name,
+        email,
+        password,
+      });
       setAlert({ msg: data.msg, error: false });
 
       setName("");
@@ -58,6 +55,7 @@ const Register = () => {
       setPassword2("");
     } catch (error) {
       setAlert({ msg: error.response.data.msg, error: true });
+      console.log(error);
     }
   };
 
@@ -156,7 +154,7 @@ const Register = () => {
         </Link>
         <Link
           className="block text-center my-5 text-slate-500 uppercase text-sm"
-          to="/recover-password"
+          to="/reset-password"
         >
           Olvide mi password
         </Link>
